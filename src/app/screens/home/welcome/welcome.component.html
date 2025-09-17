@@ -1,0 +1,17 @@
+<div class="welcome-container">
+    <h1>Bienvenido</h1>
+    <ng-container *ngIf="balances.length">
+        <h2 class="saldos">Tus Saldos</h2>
+        <section class="balance-container">
+            <div class="balance-card" *ngFor="let balance of balances">
+                <p><b>{{balance.account_type}}</b></p>
+                <p>Saldo: {{balance.balance}}</p>
+                <p>Moneda: {{balance.currency}}</p>
+                <p>Wallet: {{balance.wallet}}</p>
+                <p>Interés mensual: {{balance.cupo}}</p>
+                <p>Estado: {{balance.name_state}}</p>
+            </div>
+        </section>
+    </ng-container>
+    <img src="../../../../assets/img/LOGO HOME.png" alt="">
+</div>

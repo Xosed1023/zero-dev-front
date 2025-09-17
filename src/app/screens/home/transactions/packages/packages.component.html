@@ -1,0 +1,84 @@
+<div style="padding: 20px;">
+
+    <div *ngIf="transactionForm">
+        <form #myFormPassword="ngForm" [formGroup]="transactionForm">
+            <div class="row justify-content-right" style="margin: 0">
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <mat-label class="label-input">Paquete
+                    </mat-label>
+                    <mat-form-field class="col-12 formOutline" appearance="outline">
+                        <mat-select #profile matNativeControl formControlName="package" required class="inputOutline"
+                            placeholder="Seleccione paquete" (selectionChange)="select($event)" (focus)="error = false">
+                            <mat-option *ngFor="let account of listPackages" [value]="account">
+                                {{ account?.name }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="
+                      transactionForm
+                        .get('package')
+                        ?.hasError('required') &&
+                        transactionForm.get('package')?.touched
+                    ">
+                            Este campo es requerido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <mat-label class="label-input">Metodo de pago
+                    </mat-label>
+                    <mat-form-field class="col-12 formOutline" appearance="outline">
+                        <mat-select #profile matNativeControl formControlName="wtp" required class="inputOutline"
+                            placeholder="Seleccione método de pago" (focus)="error = false">
+                            <mat-option *ngFor="let paymentMethod of paymentMethods" [value]="paymentMethod.value">
+                                {{ paymentMethod.viewValue }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="transactionForm.get('wtp')?.hasError('required') && transactionForm.get('wtp')?.touched">
+                            Este campo es requerido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-6">
+                    <mat-label class="label-input">Valor
+                    </mat-label>
+                    <mat-form-field class="col-12 formOutline" appearance="outline">
+                        <input matInput placeholder="Valor" formControlName="value" class="inputOutline" required
+                            (focus)="error = false" />
+                        <mat-error *ngIf="
+                      transactionForm
+                        .get('value')
+                        ?.hasError('required') &&
+                        transactionForm.get('value')?.touched
+                    ">
+                            Este campo es requerido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-6" *ngIf="selectedPackage">
+                    <div class="package-card">
+                        <h1><b>{{selectedPackage.name}}</b></h1>
+                        <p>{{selectedPackage.from}}</p>
+                        <p>{{selectedPackage.rentability}}</p>
+                        <p>{{selectedPackage.min}}</p>
+                        <p>{{selectedPackage.max}}</p>
+                        <p>{{selectedPackage.gains}}</p>
+                        <p>{{selectedPackage.duration}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container-button-form">
+                <button mat-raised-button class="col-12 col-sm-6 col-lg-4 col-sm-6 col-md-6" color="primary"
+                    (click)="sendForm()">
+                    <mat-icon>send</mat-icon>
+                    Solicitar
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+</div>
