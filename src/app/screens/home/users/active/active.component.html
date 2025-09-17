@@ -1,0 +1,594 @@
+  <div class="container-users-active">
+  <div class="table-active" *ngIf="this.mode === 'table'">
+    <app-table
+      [headers]="tableActiveUserService.headers"
+      [data]="tableActiveUserService.data"
+      [actions]="tableActiveUserService.actions"
+      [disableEditItemWithStatus]="
+        tableActiveUserService.disableEditItemWithStatus
+      "
+      [totalPages]="tableActiveUserService.totalPages"
+      [actualPage]="tableActiveUserService.actualPage"
+      (status)="tableActiveUserService.changeStatusUser($event)"
+      (edit)="tableActiveUserService.editUser($event)"
+      (view)="tableActiveUserService.viewUser($event)"
+      (viewAccount)="tableActiveUserService.viewAccount($event)"
+      (add)="tableActiveUserService.addPackage($event)"
+      (back)="tableActiveUserService.backPage()"
+      (next)="tableActiveUserService.nextPage()"
+    ></app-table>
+    <div
+      class="container-button-add"
+      *ngIf="configService.role != configService.clientUser.key"
+    >
+      <button
+        mat-raised-button
+        class="col-12 col-sm-6 col-lg-4 col-sm-6 col-md-6"
+        color="primary"
+        (click)="addUserButton()"
+      >
+        <mat-icon>add</mat-icon>
+        Agregar
+      </button>
+    </div>
+  </div>
+
+  <div class="form-active" *ngIf="this.mode !== 'table'">
+    <div *ngIf="formsActiveUserService.formUser">
+      <div class="title-form">
+        <mat-icon (click)="back()">chevron_left</mat-icon>
+        <p>{{ title }}</p>
+      </div>
+      <div *ngIf="formsActiveUserService.formPassword">
+        <form #myFormPassword="ngForm" [formGroup]="formsActiveUserService.formPassword">
+          <div class="row justify-content-right" style="margin: 0">
+            <div
+              class="col-12 col-sm-6 col-lg-4"
+            >
+              <mat-label
+                [ngClass]="{
+                  'label-input': !disabled,
+                  'label-input-disabled': disabled
+                }"
+                >Contraseña
+              </mat-label>
+              <mat-form-field class="col-12 formOutline" appearance="outline">
+                <input
+                  matInput
+                  placeholder="Contraseña"
+                  formControlName="password"
+                  class="inputOutline"
+                  required
+                  type="text"
+                  [disabled]="mode === 'view'"
+                />
+                <mat-error
+                  *ngIf="
+                    formsActiveUserService.formPassword
+                      .get('password')
+                      ?.hasError('required') &&
+                    formsActiveUserService.formPassword.get('password')?.touched
+                  "
+                >
+                  Este campo es requerido
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-4">
+              <button
+                mat-raised-button
+                class="col-12"
+                color="primary"
+                (click)="createPassword()"
+                type="submit"
+                [disabled]="mode === 'view'"
+              >
+                Crear contraseña
+              </button>
+            </div>
+          </div>
+          <br>
+          <br>
+        </form>
+      </div>
+      <form #myFormUser="ngForm" [formGroup]="formsActiveUserService.formUser">
+        <div class="row justify-content-right" style="margin: 0">
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >Nombre</mat-label
+            >
+            <mat-form-field class="col-12" appearance="outline">
+              <input
+                matInput
+                appAutofocus
+                placeholder="Nombre"
+                formControlName="name"
+                type="text"
+                required
+                class="inputOutline"
+              />
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('name')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('name')?.touched
+                "
+              >
+                Este campo es obligatorio
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >Apellido</mat-label
+            >
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <input
+                matInput
+                placeholder="Apellido"
+                formControlName="lastName"
+                class="inputOutline"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('lastName')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('lastName')?.touched
+                "
+              >
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div
+            class="col-12 col-sm-6 col-lg-4"
+          >
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >Correo
+            </mat-label>
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <input
+                matInput
+                placeholder="Correo"
+                formControlName="email"
+                class="inputOutline"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('email')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('email')?.touched
+                "
+              >
+                Este campo es requerido
+              </mat-error>
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('email')
+                    ?.hasError('email') &&
+                  formsActiveUserService.formUser.get('email')?.touched
+                "
+              >
+                Debes escribir un correo electrónico válido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >Cumpleaños</mat-label
+            >
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <input
+                matInput
+                placeholder="Cumpleaños"
+                formControlName="birthDay"
+                class="inputOutline"
+                required
+                [matDatepicker]="picker"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('birthDay')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('birthDay')?.touched
+                "
+              >
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >Dirección
+            </mat-label>
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <input
+                matInput
+                placeholder="Dirección"
+                formControlName="address"
+                class="inputOutline"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('address')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('address')?.touched
+                "
+              >
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >País
+            </mat-label>
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <input
+                matInput
+                placeholder="País"
+                formControlName="country"
+                class="inputOutline"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('country')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('country')?.touched
+                "
+              >
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >Region
+            </mat-label>
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <input
+                matInput
+                placeholder="Region"
+                formControlName="stateDpto"
+                class="inputOutline"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('stateDpto')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('stateDpto')?.touched
+                "
+              >
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >Ciudad
+            </mat-label>
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <input
+                matInput
+                placeholder="Ciudad"
+                formControlName="city"
+                class="inputOutline"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('city')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('city')?.touched
+                "
+              >
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >Código Postal
+            </mat-label>
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <input
+                matInput
+                placeholder="Código Postal"
+                formControlName="postalCode"
+                class="inputOutline"
+                required
+                type="number"
+              />
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('postalCode')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('postalCode')?.touched
+                "
+              >
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4">
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >Perfil
+            </mat-label>
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <mat-select
+                #profile
+                matNativeControl
+                formControlName="profile"
+                required
+                class="inputOutline"
+                (selectionChange)="select($event)"
+              >
+                <mat-option
+                  *ngFor="let profile of profileList"
+                  [value]="profile.key"
+                >
+                  {{ profile.role }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('profile')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('profile')?.touched
+                "
+              >
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div
+            class="col-12 col-sm-6 col-lg-4"
+          >
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >Contraseña
+            </mat-label>
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <input
+                matInput
+                placeholder="Contraseña"
+                formControlName="password"
+                class="inputOutline"
+                required
+                [type]="hidePassword ? 'password' : 'text'"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hidePassword = !hidePassword"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hidePassword"
+                [disabled]="mode === 'view'"
+              >
+                <mat-icon>{{
+                  hidePassword ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('password')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('password')?.touched
+                "
+              >
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- <div
+            class="col-12 col-sm-6 col-lg-4"
+
+            *ngFor="let balance of balances"
+          >
+            <mat-label
+              >{{balance.account_type}}
+            </mat-label>
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <input
+                matInput
+                class="inputOutline"
+                disabled
+                value="{{ balance.wallet }}"
+              />
+            </mat-form-field>
+          </div> -->
+
+          <div class="col-12 col-sm-6 col-lg-4" *ngIf="mode === 'create'">
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >USDT
+            </mat-label>
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <input
+                matInput
+                placeholder="USDT"
+                formControlName="usdt"
+                class="inputOutline"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('usdt')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('usdt')?.touched
+                "
+              >
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4" *ngIf="mode === 'create'">
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >ETH
+            </mat-label>
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <input
+                matInput
+                placeholder="ETH"
+                formControlName="eth"
+                class="inputOutline"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('eth')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('eth')?.touched
+                "
+              >
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4" *ngIf="mode === 'create'">
+            <mat-label
+              [ngClass]="{
+                'label-input': !disabled,
+                'label-input-disabled': disabled
+              }"
+              >BTC
+            </mat-label>
+            <mat-form-field class="col-12 formOutline" appearance="outline">
+              <input
+                matInput
+                placeholder="BTC"
+                formControlName="btc"
+                class="inputOutline"
+                required
+              />
+              <mat-error
+                *ngIf="
+                  formsActiveUserService.formUser
+                    .get('btc')
+                    ?.hasError('required') &&
+                  formsActiveUserService.formUser.get('btc')?.touched
+                "
+              >
+                Este campo es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="container-button-form">
+            <button
+              mat-raised-button
+              class="col-12 col-sm-6 col-lg-4 col-sm-6 col-md-6"
+              color="primary"
+              (click)="saveUser()"
+              *ngIf="this.mode === 'create'"
+              type="submit"
+              [disabled]="configService.consultantUser.key === id"
+            >
+              <mat-icon>add</mat-icon>
+              Agregar
+            </button>
+
+            <button
+              mat-raised-button
+              class="col-12 col-sm-6 col-lg-4 col-sm-6 col-md-6"
+              color="primary"
+              (click)="saveUser()"
+              *ngIf="this.mode === 'edit'"
+              type="submit"
+            >
+              <mat-icon>save</mat-icon>
+              Guardar
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

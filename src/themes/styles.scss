@@ -1,0 +1,174 @@
+/* You can add global styles to this file, and also import other style files */
+@import "@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "bootstrap/scss/bootstrap";
+@import "./theme.scss";
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: #BEBEBE !important;
+}
+
+.background-input {
+    background-color: map-get($theme-default, "grey");
+}
+
+.primary-color {
+    color: map-get($theme-default, "primary");
+}
+
+.primary-background {
+    background-color: map-get($theme-default, "primary");
+}
+
+.primary-border {
+    border-color: map-get($theme-default, "primary");
+}
+
+.secondary-color {
+    color: map-get($theme-default, "secondary");
+}
+
+.danger-color {
+    color: map-get($theme-default, "danger");
+}
+
+.white-color {
+    color: map-get($theme-default, "white");
+}
+
+button {
+    height: 40px;
+    font-size: 16px !important;
+}
+
+.label-input {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: map-get($theme-default, "gray");
+    border-radius: 5px;
+}
+
+.mat-form-field-appearance-outline .mat-input-element {
+    color: black;
+}
+
+.mat-mdc-form-field-error{
+    font-size: 12px !important;
+}
+
+.mat-mdc-form-field-subscript-wrapper{
+    display: flex;
+}
+
+.mat-mdc-form-field-hint-wrapper, .mat-mdc-form-field-error-wrapper{
+    position: inherit !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 7px;
+    height: 5px;
+    background-color: rgb(212, 212, 212);
+    border-radius: 7px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgb(168, 168, 168);
+    -webkit-border-radius: 1ex;
+
+    &:hover {
+        background-color: map-get($theme-default, "primary");
+    }
+}
+
+.mat-mdc-snack-bar-container{
+    --mdc-snackbar-container-color: transparent !important;
+    --mdc-snackbar-supporting-text-color: white;
+}
+
+.snackbar-warn {
+    background-color: rgb(146, 4, 4) !important;
+    color: white !important;
+    button {
+        color: black !important;
+    }
+}
+
+.snackbar-success {
+    background-color:rgb(21, 22, 75) !important;
+    color: white !important;
+
+    button {
+        color: white !important;
+    }
+}
+
+.snackbar-alert {
+    background-color: rgb(230, 21, 21) !important;
+    color: white !important;
+
+    button {
+        color: white !important;
+    }
+}
+
+.mat-slide-toggle-bar {
+    width: 46px !important;
+    height: 30px !important;
+    border-radius: 15px !important;
+    margin-top: 10px !important;
+}
+
+.mat-slide-toggle-thumb {
+    height: 30px !important;
+    width: 30px !important;
+    margin-top: 3px !important;
+}
+
+.title-form{
+    display: flex;
+    justify-content: left;
+    margin-bottom: 20px;
+    align-items: center;
+    color: map-get($theme-default, "primary");
+    h1{
+        margin: 0 0px;
+        font-size: 32px;
+        line-height: 30px;
+        flex: 1;
+    }
+}
+
+.card-container{
+    background-color: white;
+    border-radius: 10px;
+    margin: 20px;
+    padding: 20px;
+}
+
+.mat-mdc-slide-toggle .mdc-switch .mdc-switch__track {
+    width: 46px !important;
+    height: 30px !important;
+    border-radius: 15px !important;
+    margin-top: 0px !important;
+}
+
+.mat-mdc-slide-toggle .mdc-switch .mdc-switch__handle {
+    height: 30px !important;
+    width: 30px !important;
+    margin-top: 1px !important;
+    border-radius: 50% !important;
+
+}

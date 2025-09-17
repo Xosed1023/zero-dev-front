@@ -1,0 +1,84 @@
+<div style="padding: 20px;">
+    <div style="padding: 20px; display: flex; gap: 10px;">
+        <div *ngFor="let bal of balance; let i = index" style="border: 1px solid;
+        border-radius: 5px;
+        padding: 15px;
+        background-color: rgb(240, 228, 215);">
+            <div>
+                <b>Tipo de cuenta</b> {{bal.account_type}}
+            </div>
+            <div>
+                <b>Balance</b> {{bal.balance}}
+            </div>
+        </div>
+    </div>
+    <div *ngIf="rechargeForm">
+        <form #myFormPassword="ngForm" [formGroup]="rechargeForm">
+            <div class="row justify-content-right" style="margin: 0">
+
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <mat-label class="label-input">Cuenta de origen
+                    </mat-label>
+                    <mat-form-field class="col-12 formOutline" appearance="outline">
+                        <mat-select #profile matNativeControl formControlName="account1" required class="inputOutline"
+                            (selectionChange)="select($event)" (focus)="error = false">
+                            <mat-option *ngFor="let account of listAccounts" [value]="account">
+                                {{ account?.name }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="
+                      rechargeForm
+                        .get('account1')
+                        ?.hasError('required') &&
+                        rechargeForm.get('account1')?.touched
+                    ">
+                            Este campo es requerido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <mat-label class="label-input">Número de tarjeta
+                    </mat-label>
+                    <mat-form-field class="col-12 formOutline" appearance="outline">
+                        <input matInput placeholder="Número de tarjeta" formControlName="cardNumber" class="inputOutline" required
+                            (focus)="error = false" />
+                        <mat-error *ngIf="
+                      rechargeForm
+                        .get('cardNumber')
+                        ?.hasError('required') &&
+                        rechargeForm.get('cardNumber')?.touched
+                    ">
+                            Este campo es requerido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <mat-label class="label-input">Valor
+                    </mat-label>
+                    <mat-form-field class="col-12 formOutline" appearance="outline">
+                        <input matInput placeholder="Valor" formControlName="value" class="inputOutline" required
+                            (focus)="error = false" />
+                        <mat-error *ngIf="
+                      rechargeForm
+                        .get('value')
+                        ?.hasError('required') &&
+                        rechargeForm.get('value')?.touched
+                    ">
+                            Este campo es requerido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="container-button-form">
+                <button mat-raised-button class="col-12 col-sm-6 col-lg-4 col-sm-6 col-md-6" color="primary"
+                    (click)="sendForm()" [disabled]="formSended">
+                    <mat-icon>send</mat-icon>
+                    Solicitar
+                </button>
+            </div>
+        </form>
+        <h2 *ngIf="error">TU SALDO NO ES SUFICIENTE</h2>
+    </div>
+</div>

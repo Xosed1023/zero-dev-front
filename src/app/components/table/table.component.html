@@ -1,0 +1,143 @@
+<div class="table-box">
+  <div class="table-container">
+    <div style="overflow-x: auto; padding-bottom: 10px">
+      <table *ngIf="dataView && dataView.length > 0">
+        <tr [style.height]="height ? height : '40px'">
+          <th
+            *ngFor="let header of headers; let i = index"
+            [style.width]="'calc(100%/' + headers.length + ')'"
+            [style.height]="height ? height : '40px'"
+          >
+            <div
+              [style.background-color]="color ? color : '#054605'"
+              [style.color]="colorText ? colorText : 'white'"
+              [style.text-align]="positionHeader"
+              [style.border]="border ? border : '1px solid #054605'"
+              [style.border-color]="
+                color ? color + ' !important' : '#054605 !important'
+              "
+              [ngClass]="{
+                'border-start-start': i == 0,
+                'border-start-end': i == headers.length - 1,
+                'div-th': true,
+                'border-top': true,
+                'border-right': i == headers.length - 1,
+                'border-left': i == 0
+              }"
+            >
+              {{ header }}
+            </div>
+          </th>
+        </tr>
+
+        <tr
+          *ngFor="let item of dataView; let i = index"
+          [style.height]="height ? height : '40px'"
+        >
+          <td
+            *ngFor="let key of keys; let y = index"
+            [style.width]="'calc(100%/' + headers.length + ')'"
+            [style.height]="height ? height : '40px'"
+          >
+            <div
+              [style.border]="border ? border : '1px solid #054605'"
+              [style.text-align]="positionCells"
+              class="div-td"
+              [ngClass]="{
+                'border-end-start': y == 0 && i == dataView.length - 1,
+                'border-end-end':
+                  y == headers.length - 1 && i == dataView.length - 1,
+                'border-right': y == headers.length - 1,
+                'border-left': y == 0,
+                'border-bottom': i == dataView.length - 1,
+                'background-secondary': item.select,
+                'background-primary': item.notSelect,
+                'color-alarm': item.alarm
+              }"
+              [style.border-color]="
+                color ? color + ' !important' : '#054605 !important'
+              "
+            >
+              {{ item[key] }}
+            </div>
+          </td>
+          <td *ngIf="viewActions" class="container-actions">
+            <div class="container-icon" *ngIf="actions.view">
+              <button
+                mat-mini-fab
+                color="primary"
+                class="icon"
+                [ngStyle]="{ transform: 'scale(0.8)' }"
+                (click)="handleView(item)"
+              >
+                <mat-icon>visibility</mat-icon>
+              </button>
+            </div>
+            <div class="container-icon" *ngIf="actions.edit">
+              <button
+                mat-mini-fab
+                color="primary"
+                class="icon"
+                [ngStyle]="{ transform: 'scale(0.8)' }"
+                (click)="handleEdit(item)"
+                [disabled]="configService.consultantUser.key === id || currentUserRolId === 3"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+            <div class="container-icon" *ngIf="actions.add">
+              <button
+                mat-mini-fab
+                color="primary"
+                class="icon"
+                [ngStyle]="{ transform: 'scale(0.8)' }"
+                (click)="handleAddPackage(item)"
+                [disabled]="item.id_rol != configService.clientUser.role || currentUserRolId === 3"
+              >
+                <mat-icon>library_add</mat-icon>
+              </button>
+            </div>
+            <div class="container-icon" *ngIf="actions.viewAccount">
+              <button
+                mat-mini-fab
+                color="primary"
+                class="icon"
+                [ngStyle]="{ transform: 'scale(0.8)' }"
+                (click)="handleViewAccount(item)"
+                [disabled]="item.id_rol != configService.clientUser.role"
+              >
+                <mat-icon>manage_accounts</mat-icon>
+              </button>
+            </div>
+            <!-- <div class="container-icon" *ngIf="actions.status">
+              <mat-slide-toggle
+                color="primary"
+                [(ngModel)]="item.status"
+                (change)="onChange(item)"
+              >
+              </mat-slide-toggle>
+            </div> -->
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div *ngIf="!dataView || dataView.length === 0" class="no-data">
+      <p>No se encontraron datos relacionados</p>
+    </div>
+    <div
+      class="paginator"
+      [style.color]="color ? color : '#054605'"
+      *ngIf="paginator"
+    >
+      <mat-icon (click)="handleBack()" [ngClass]="{ disabled: actualPage == 1 }"
+        >arrow_circle_left</mat-icon
+      >
+      <h3>{{ "Página " + actualPage + " de " + totalPages }}</h3>
+      <mat-icon
+        (click)="handleNext()"
+        [ngClass]="{ disabled: actualPage >= totalPages }"
+        >arrow_circle_right
+      </mat-icon>
+    </div>
+  </div>
+</div>

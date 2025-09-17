@@ -1,0 +1,12 @@
+<div class="container-Transactions">
+  <div class="card-container">
+    <div class="menu-Transactions">
+        <div *ngFor="let item of transactionsMenu.children" [ngClass]="{ 'items': true,  'select': item.select}">
+            <div (click)="changeMenu(item)">{{item.text}}</div>
+        </div>
+    </div>
+    <div>
+        <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
